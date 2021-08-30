@@ -68,7 +68,7 @@ namespace listadoEstudiantes
         }
         private static string getPath()
         {
-            string path = @"E:\ListadoAlumnos\listado.txt";
+            string path = @"E:\ListadoAlumnos\listado.txt"; //Esta ruta es debido a su dispositivo y ruta de almacenamiento Ing...
             return path;
         }
 
@@ -150,6 +150,36 @@ namespace listadoEstudiantes
             {
                 Console.WriteLine("El registro no se encontro!");
             }
+        }
+        private static void eliminarAlumno()
+        {
+            Console.Write("Escriba el nombre del estudiante a eliminar: ");
+            var name = Console.ReadLine();
+
+            if (search(name))
+            {
+                Dictionary<string, string> dicEdit = new Dictionary<string, string>();
+                dicEdit = readFile();
+
+                dicEdit.Remove(name);
+
+                Console.WriteLine("Se ha eliminado correctaamente al alumno de los registros.");
+                File.Delete(getPath());
+
+                using (StreamWriter sw = File.AppendText(getPath()))
+                {
+                    foreach (KeyValuePair<string, string> values in dicEdit)
+                    {
+                        sw.WriteLine("{0}, {1}", values.Key, values.Value);
+                    }
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("No se encontro al alumnos en los registros.");
+            }
+
         }
     }
 }
