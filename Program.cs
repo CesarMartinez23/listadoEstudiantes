@@ -109,5 +109,48 @@ namespace listadoEstudiantes
             }
             return listData;
         }
+
+        private static bool search(string name)
+        {
+            if (!readFile().ContainsKey(name))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static void actualizarDatosAlumno()
+        {
+            Console.Write("Escriba el nombre del estudiante a actualizar: ");
+            var name = Console.ReadLine();
+
+            if (search(name))
+            {
+                Console.WriteLine("Se encontro al alumno correctamente, puede editar los datos");
+                Console.Write("Nombre: ");
+                var newNombre = Console.ReadLine();
+
+                Dictionary<string, string> dicEdit = new Dictionary<string, string>();
+                dicEdit = readFile();
+
+                dicEdit[name] = newNombre;
+                Console.WriteLine("Los datos se actualizaron correctamente");
+                File.Delete(getPath());
+
+                using (StreamWriter sw = File.AppendText(getPath()))
+                {
+
+                    foreach (KeyValuePair<string, string> values in dicEdit)
+                    {
+                        sw.WriteLine("{0}; {1}", values.Key, values.Value);
+                    }
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("El registro no se encontro!");
+            }
+        }
     }
 }
